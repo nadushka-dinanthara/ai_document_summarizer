@@ -1,0 +1,10 @@
+streamlit
+opencv-python
+pytesseract
+easyocr
+numpy
+Pillow
+gensim
+torch
+transformers
+sentencepiece
