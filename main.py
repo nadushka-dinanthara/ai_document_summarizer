@@ -1,33 +1,56 @@
 import streamlit as st
+import numpy as np
+import cv2
+from pdf2image import convert_from_bytes
 from src.preprocess import preprocess_image
 from src.ocr import extract_text
 from src.summarizer import summarize_text
-from PIL import Image
-import numpy as np
-import cv2
+
+POPPLER_PATH = "C:/Users/ACER/Downloads/Release-24.08.0-0/poppler-24.08.0/Library/bin"
 
 st.title("📄 AI Document Scanner & Summarizer")
-st.write("Upload your document image (jpg/png) or PDF, and get a summary instantly!")
+st.write("Upload an image or PDF document")
 
-# File upload
-uploaded_file = st.file_uploader("Upload document", type=["jpg","png"])
+uploaded_file = st.file_uploader(
+    "Choose a file",
+    type=["jpg", "png", "pdf"]
+)
 
 if uploaded_file:
-    # Preprocess the uploaded image
-    processed_img = preprocess_image(uploaded_file)
 
-    # OCR: extract text
-    text = extract_text(processed_img)
+    text_all_pages = ""
 
-    # Summarize text
-    summary = summarize_text(text)
+    # ---------- PDF Handling ----------
+    if uploaded_file.type == "application/pdf":
 
-    # Display results
+        pages = convert_from_bytes(
+            uploaded_file.read(),
+            poppler_path=POPPLER_PATH
+        )
+
+        st.success(f"PDF Loaded ({len(pages)} pages)")
+
+        for page in pages:
+            # Convert PIL → OpenCV
+            cv_img = cv2.cvtColor(np.array(page), cv2.COLOR_RGB2BGR)
+
+            processed_img = preprocess_image(cv_img, is_file=False)
+
+            page_text = extract_text(processed_img)
+
+            text_all_pages += page_text + "\n\n"
+
+    # ---------- Image Handling ----------
+    else:
+        processed_img = preprocess_image(uploaded_file, is_file=True)
+        text_all_pages = extract_text(processed_img)
+
+    # ---------- Summarization ----------
+    summary = summarize_text(text_all_pages)
+
+    # ---------- UI Output ----------
     st.subheader("Extracted Text")
-    st.text_area("Text from your document", text, height=300)
+    st.text_area("OCR Output", text_all_pages, height=300)
 
     st.subheader("Summary")
     st.text_area("Summary", summary, height=200)
-
-    # Optional: show processed image
-    st.image(processed_img, caption="Processed Image", use_column_width=True)

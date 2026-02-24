@@ -8,3 +8,4 @@ gensim
 torch
 transformers
 sentencepiece
+pdf2image
