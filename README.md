@@ -4,33 +4,6 @@ A smart app that **reads invoices and receipts (PDF or images)** and generates a
 
 No manual input required — just upload a file and get a clean, concise summary in seconds.
 
----
-
-## 🔹 Folder Structure
-
-Here’s how the project is organized:
-
-
-ai_document_summarizer/
-│
-├── main.py # Streamlit app entry point
-├── requirements.txt # All Python dependencies
-├── README.md # Project documentation
-│
-├── src/ # Source code for processing
-│ ├── preprocess.py # Image preprocessing functions
-│ ├── ocr.py # OCR functions using pytesseract
-│ ├── parser.py # (Optional) structured info extraction
-│ └── categorizer.py # (Optional) category assignment functions
-│
-├── venv/ # Python virtual environment
-│
-└── data/ # Optional folder for test images/PDFs
-├── input/ # Example input files
-└── output/ # Generated outputs (if any)
-
-
----
 
 ## 🔹 Features
 
