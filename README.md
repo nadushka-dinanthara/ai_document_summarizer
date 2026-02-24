@@ -1,143 +1,119 @@
-📄 AI Document Scanner & Summarizer
+# 🧾 AI Invoice & Receipt Summarizer
 
-An interactive Streamlit-based ML application that allows users to upload images or PDF documents, extract text using OCR, and generate a concise summary automatically.
+A smart app that **reads invoices and receipts (PDF or images)** and generates a **human-readable summary automatically** using OCR and LexRank-based text summarization.  
 
-This project combines:
+No manual input required — just upload a file and get a clean, concise summary in seconds.
 
-✔ Computer Vision (OpenCV)
-✔ Optical Character Recognition (Tesseract OCR)
-✔ Natural Language Processing (Text Summarization)
-✔ Interactive UI (Streamlit)
+---
 
-🚀 Features
+## 🔹 Folder Structure
 
-Upload JPG / PNG images
+Here’s how the project is organized:
 
-Upload PDF documents (multi-page supported)
 
-Automatic PDF → Image conversion
-
-Image preprocessing for improved OCR accuracy
-
-Text extraction via Tesseract OCR
-
-Extractive text summarization using LexRank
-
-Clean & simple UI
-
-📂 Project Structure
 ai_document_summarizer/
 │
-├── main.py
-├── requirements.txt
+├── main.py # Streamlit app entry point
+├── requirements.txt # All Python dependencies
+├── README.md # Project documentation
 │
-└── src/
-    ├── preprocess.py
-    ├── ocr.py
-    └── summarizer.py
-⚙️ Requirements
+├── src/ # Source code for processing
+│ ├── preprocess.py # Image preprocessing functions
+│ ├── ocr.py # OCR functions using pytesseract
+│ ├── parser.py # (Optional) structured info extraction
+│ └── categorizer.py # (Optional) category assignment functions
+│
+├── venv/ # Python virtual environment
+│
+└── data/ # Optional folder for test images/PDFs
+├── input/ # Example input files
+└── output/ # Generated outputs (if any)
 
-Python 3.10+
 
-Tesseract OCR (Windows)
+---
 
-Poppler (for PDF processing)
+## 🔹 Features
 
-🛠 Installation Guide (Windows)
-1️⃣ Clone the Repository
-git clone <your-repo-url>
+- Upload **image files** (`.jpg`, `.png`) or **PDF invoices**.  
+- Automatically extract text using **Tesseract OCR**.  
+- Generate **natural paragraph summaries** using **LexRank** (via `sumy`).  
+- Multi-page PDF support.  
+- Fully automatic — no manual formatting needed.  
+
+---
+
+## 🔹 How It Works
+
+1. **Upload** an invoice or receipt.  
+2. If it’s a PDF, each page is converted to an image.  
+3. OCR (**Tesseract**) reads text from the image.  
+4. LexRank (**Sumy**) generates a **concise summary paragraph**.  
+5. The summary is displayed directly in the app.
+
+---
+
+## 🔹 Example
+
+**Input:** An image or PDF of a receipt  
+
+**Output (summary):**
+
+> "This invoice is from KFC Colombo, dated 22/02/2026. The total amount paid is LKR 1,450.00, which falls under the category 'Food'. Please refer to the original document for full details."
+
+---
+
+## 🔹 Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/ai_document_summarizer.git
 cd ai_document_summarizer
-2️⃣ Create Virtual Environment (Recommended)
+
+Create a virtual environment and activate it:
+
 python -m venv venv
-venv\Scripts\activate
-3️⃣ Install Python Dependencies
+venv\Scripts\activate   # Windows
+source venv/bin/activate # macOS/Linux
+
+Install requirements:
+
 pip install -r requirements.txt
-📄 PDF Support Dependency (Poppler)
 
-PDF files are converted to images using pdf2image, which requires Poppler.
+Install Tesseract OCR:
 
-✅ Download Poppler
+Download: Tesseract
 
-Download from:
+Add Tesseract executable to your PATH, or update tesseract_cmd in your code.
 
-https://github.com/oschwartz10612/poppler-windows/releases
+Install Poppler (for PDF to image conversion):
 
-Recommended version:
+Download: Poppler for Windows
 
-✔ poppler-24.08.0-0.zip
+Update POPPLER_PATH in main.py with the bin folder path.
 
-✅ Extract Poppler
-
-Example location:
-
-C:\Users\ACER\Downloads\poppler-24.08.0
-
-Confirm this folder exists:
-
-C:\Users\ACER\Downloads\poppler-24.08.0\bin
-
-Inside bin, you MUST see:
-
-pdfinfo.exe
-pdftoppm.exe
-✅ Configure Poppler Path in Code
-
-Open main.py and update:
-
-POPPLER_PATH = r"C:\Users\ACER\Downloads\poppler-24.08.0\bin"
-
-⚠ Use your exact extracted location.
-
-🔎 OCR Dependency (Tesseract)
-
-Text extraction relies on Tesseract OCR.
-
-✅ Install Tesseract
-
-Download Windows installer:
-
-https://github.com/UB-Mannheim/tesseract/wiki
-
-Install with default settings.
-
-Default path:
-
-C:\Program Files\Tesseract-OCR\tesseract.exe
-✅ Configure Tesseract Path
-
-Open src/ocr.py and confirm:
-
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-▶ Running the Application
-
-Activate virtual environment:
-
-venv\Scripts\activate
-
-Run Streamlit:
-
+🔹 Run the App
 streamlit run main.py
 
-Browser will open automatically.
+Upload a receipt or invoice (PDF/Image).
 
-📌 How It Works
+The summary paragraph will appear in the app.
 
-User uploads Image / PDF
+🔹 Dependencies
 
-PDFs are converted to images via Poppler
+Python 3.9+
 
-Images are preprocessed using OpenCV
+Streamlit
 
-Tesseract extracts text
+OpenCV
 
-NLP summarizer generates summary
+NumPy
 
-UI displays results
+Pillow
 
-🧠 ML / NLP Components
+PyTesseract
 
-OCR Engine → Tesseract OCR
+pdf2image
 
-Summarization Model → LexRank (Extractive)
-
-Image Processing → OpenCV adaptive thresholding
+Sumy
+ (LexRank summarization)
